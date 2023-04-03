@@ -1,0 +1,56 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Results - Period {{ player.round_number }}{{ endblock }}
+
+{{ block content }}
+
+{ block title }}Results{{ endblock }}
+{{ block content }}
+    <table class="table mb-5">
+        <tr>
+            <th>Your price</th>
+            <td>{{ player.price }} {{ C.ECU_LABEL }}</td>
+        </tr>
+        <tr>
+            <th>Your firm's price</th>
+            <td>{{ group.price }} {{ C.ECU_LABEL }}</td>
+        </tr>
+        <tr>
+            <th>Lowest price in the market</th>
+            <td>{{ subsession.winning_price }} {{ C.ECU_LABEL }}</td>
+        </tr>
+        <tr>
+            <th>Was your product sold?</th>
+            <td>{{ if group.win }} Yes {{ else }} No {{ endif }}</td>
+        </tr>
+        <tr>
+            <th>Your payoff</th>
+            <td>{{ payoff }} {{ C.ECU_LABEL }}</td>
+        </tr>
+        <tr>
+            <th>Your cumulative payoff</th>
+            <td> {{ cumulative_payoff }} {{ C.ECU_LABEL }}</td>
+        </tr>
+    </table>
+
+    {{ if session.config.num_firms == 2 }}
+    <h4> Price selected by another firm </h4>
+    {{ else }}
+    <h4>Price selected by other firms </h4>
+    {{ endif }}
+
+    <table class="table w-50 my-3">
+        <tr>
+            <th>Firm </th>
+            <th>Price</th>
+        </tr>
+        {{ for color, price in other_firms }}
+            <tr>
+                <th>{{ color }}</th>
+                <th>{{ price }} {{ C.ECU_LABEL }}</th>
+            </tr>
+        {{ endfor }}
+    </table>
+
+    {{ next_button }}
+
+{{ endblock }}

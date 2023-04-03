@@ -1,0 +1,109 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Title{{ endblock }}
+
+{{ block styles }}
+    <style>
+        .input-group, input.form-control, select.form-control {
+            max-width: 180px;
+        }
+
+        .otree-timer {
+            position: sticky;
+            top: 0px;
+            width: fit-content;
+            float: right;
+        }
+    </style>
+{{ endblock }}
+
+{{ block scripts }}
+    <script>
+        $(function () {
+            let wrapper = $('<div class="input-group mb-3"></div>');
+
+            $('input[type="number"]').each(function (i) {
+                let ecuLabel = $('<span class="input-group-text">ECUs</span>');
+                $(this).wrap(wrapper).parents('.input-group').append(ecuLabel);
+            })
+
+            let chatBtn = $('.otree-chat__btn-send'),
+                chatInput = $('.otree-chat__input');
+
+            $('.otree-btn-next').on('click', function (e) {
+                e.preventDefault();
+                let form = $('#form');
+                if (form[0].reportValidity()) {
+                    chatInput.val(
+                        'This participant has submitted their price decision and left the page'
+                    )
+                    chatBtn.click();
+                    form.submit();
+                }
+            })
+        })
+    </script>
+{{ endblock }}
+
+{{ block title }}Decision{{ endblock }}
+
+{{ block content }}
+
+
+<div class="chat-widget">
+    <h5><i><b>You can chat with your team in the box below</b></i></h5>
+    {{ chat nickname=nickname }}
+</div>
+
+
+{{ if player.round_number == 17 or player.round_number == 18 or player.round_number == 19 or player.round_number == 20 }}
+<h3>
+    Instructions- Part 2
+</h3>
+<p>
+        It is currently period {{ player.round_number }} . In period 21,
+        {{ if participant.moved }}<b>you</b>{{ else }}<b>Player {{ player_uuid }}</b>
+        from your firm{{ endif }}
+
+        will leave the firm and join
+        {{ if session.config.num_firms == 2 }}
+        the other firm in the market.
+        {{ else }}
+        another firm in the market.
+        {{ endif }}
+
+        A person from
+        {{ if session.config.num_firms == 2 }}
+        the other firm
+        {{ else }}
+        another firm
+        {{ endif }}
+        will join this firm and will have a unique ID.
+        {{ if session.config.num_firms == 2 }}
+        The other firm in the market is receiving a similar message so everyone is aware of the change procedure.
+        {{ else }}
+        The other firms in the market are receiving a similar message so everyone is aware of the change procedure.
+        {{ endif }}
+        In periods 21 and 22, you will have
+        <b>3</b> minutes to chat with your new
+        {{ if session.config.players_per_group == 2 }}
+        teammate.
+        {{ else }}
+        teammates.
+        {{ endif }}
+        Starting with period 23, you will have 60 seconds to chat with your
+        {{ if session.config.players_per_group == 2  }}
+        teammate.
+        {{ else }}
+        teammates.
+        {{ endif }}
+
+        Messages are only visible to the current members of the firm; no previous members can view these messages.
+        Otherwise, the market, price determination, feedback, and profits are the same as before.
+</p>
+
+
+{{ endif }}
+
+
+{{ endblock }}
+

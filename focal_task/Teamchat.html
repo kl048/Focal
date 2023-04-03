@@ -1,0 +1,68 @@
+{{ extends 'global/Page.html' }}
+{{ block title }}Title{{ endblock }}
+
+{{ block styles }}
+    <style>
+        .input-group, input.form-control, select.form-control {
+            max-width: 180px;
+        }
+
+        .otree-timer {
+            position: sticky;
+            top: 0px;
+            width: fit-content;
+            float: right;
+        }
+    </style>
+{{ endblock }}
+
+{{ block scripts }}
+    <script>
+        $(function () {
+
+
+            let chatBtn = $('.otree-chat__btn-send'),
+                chatInput = $('.otree-chat__input');
+
+            $('.otree-btn-next').on('click', function (e) {
+                e.preventDefault();
+                let form = $('#form');
+                if (form[0].reportValidity()) {
+                    chatInput.val(
+                        'This participant has submitted their answers and left the page. For period-1 price decision, your chat box will show the history of chat during trivia round as well.'
+                    )
+                    chatBtn.click();
+                    form.submit();
+                }
+            })
+        })
+    </script>
+{{ endblock }}
+
+{{ block title }}Chat with your
+{{ if session.config.players_per_group == 2 }}
+teammate
+{{ else }}
+teammates
+{{ endif }}
+and answer the following questions.
+
+You will be paid $0.50 for each right answer.
+{{ endblock }}
+
+{{ block content }}
+
+{{ formfields }}
+
+<div class="chat-widget">
+    <h5><i><b>You can chat with your team in the box below</b></i></h5>
+    {{ chat nickname=nickname }}
+</div>
+
+
+<p>{{ next_button }}</p>
+
+
+
+{{ endblock }}
+
