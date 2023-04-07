@@ -3,17 +3,28 @@ from os import environ
 SESSION_CONFIG_DEFAULTS = dict(real_world_currency_per_point=1, participation_fee=7)
 SESSION_CONFIGS = [
     dict(
-        name='focal_point_teams',
-        display_name='Focal point - Firms 2 / Employees 2',
+        name='focal_point_teams_yes_no',
+        display_name='Focal point - Firms 2 / Employees 2 - YES_NO',
         num_demo_participants=4,
         app_sequence=['focal_task', 'focal_crt', 'focal_survey'],
         use_browser_bots=False,
         show_instructions=False,
         num_firms=2,
         players_per_group=2,
+        session_treatment="YES_NO"
+    ),
+    dict(
+        name='focal_point_teams_no_yes',
+        display_name='Focal point - Firms 2 / Employees 2 - NO_YES',
+        num_demo_participants=4,
+        app_sequence=['focal_task', 'focal_crt', 'focal_survey'],
+        use_browser_bots=False,
+        show_instructions=False,
+        num_firms=2,
+        players_per_group=2,
+        session_treatment="NO_YES"
     ),
 ]
-
 
 LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
@@ -21,7 +32,7 @@ USE_POINTS = False
 
 DEMO_PAGE_INTRO_HTML = ''
 
-PARTICIPANT_FIELDS = ['uuid', 'moved', 'player_moving','end_payoff_two','end_payoff_four']
+PARTICIPANT_FIELDS = ['uuid', 'moved', 'player_moving', 'end_payoff_two', 'end_payoff_four']
 SESSION_FIELDS = ['show_round = True']
 
 ROOMS = [
@@ -50,7 +61,7 @@ ROOMS = [
         display_name='Firms 2E - Employees 2E',
         participant_label_file='_rooms/workstation.txt',
     ),
-    
+
 ]
 
 ADMIN_USERNAME = 'admin'
