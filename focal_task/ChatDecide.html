@@ -22,8 +22,16 @@
         }
 
         .profile1 {
-            height: 30%;
-            width: 30%;
+            height: 35%;
+            width: 35%;
+        }
+
+        div button {
+            display: inline-block;
+        }
+
+        #calculator-results {
+            font-size: 150%;
         }
 
     </style>
@@ -34,7 +42,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5> Period {{ player.round_number }} </h5>
+                    <h5 align="center"> Period {{ player.round_number }} </h5>
                 </div>
             </div>
             <div class="row">
@@ -121,6 +129,7 @@
                     {% endif %}
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="container">
                     <div class="row">
@@ -142,27 +151,32 @@
                                             <input type="number" class="form-control" id="other_price">
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <button type="button" class="btn btn-primary mb-2" id="calculator-submit">
-                                            Calculate profit
+                                    <div class="w3-show-inline-block">
+
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-secondary btn-sm mb-2" id="calculate">
+                                            See profits for the entered price
                                         </button>
                                     </div>
-                                    <div class="form-group row">
-                                        <button type="button" class="btn btn-primary mb-2" id="calculator-submit">Submit
-                                            profit
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-sm mb-2"
+                                                id="calculator-submit" style="display: none;">
+                                            Submit Price
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6" id="calculator-results">
-                            <p>Results here</p>
+                            <p>Profit: </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                 </div>
             </div>
+            <br>
             <div class="row">
                 <div class="col-md-12">
                     <div class="chat-widget">
@@ -253,11 +267,11 @@
                         'This participant has submitted their price decision and left the page'
                     )
                     chatBtn.click();
-                    form.submit();
+                    $("#form").submit();
                 }
             });
 
-            $("#calculator-submit").on("click", function (e) {
+            $("#calculate").on("click", function (e) {
                 e.preventDefault();
                 let my_price = parseInt($("#my_price").val());
                 let other_price = parseInt($("#other_price").val());
@@ -271,6 +285,19 @@
                     other_price: other_price
                 });
             });
+
+            $("#calculator-submit").on("click", function (e) {
+                let entered_price = parseInt($("#my_price").val());
+                if (isNaN(entered_price)) {
+                    return;
+                }
+                $('#id_price').val(entered_price);
+                chatInput.val(
+                    'This participant has submitted their price decision and left the page'
+                )
+                chatBtn.click();
+                $("#form").submit();
+            });
         });
 
         function liveRecv(data) {
@@ -278,7 +305,8 @@
             if (data.type && data.type === "error") {
                 alert(data.message);
             } else {
-                $("#calculator-results").html(data.value);
+                $("#calculator-results").html("Profit: " + data.value);
+                $('#calculator-submit').show();
             }
         }
     </script>

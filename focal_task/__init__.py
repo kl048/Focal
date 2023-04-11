@@ -219,7 +219,7 @@ def creating_session(subsession: Subsession):
             else:
                 p.session_phase = "NO"
         else:
-            if 26 <= subsession.round_number <= 50:
+            if 1 <= subsession.round_number <= 25:
                 p.session_phase = "NO"
             else:
                 p.session_phase = "YES"
@@ -283,6 +283,14 @@ def set_payoffs(subsession: Subsession):
     for g in groups:
         set_price(g)
 
+    for g in groups:
+        my_firm_price = g.price
+        other_firms_prices = [group.price for group in subsession.get_groups() if group != g]
+        other_firm_price = other_firms_prices[0]  # We only have two groups.
+        for player in g.get_players():
+            profit = calculate_possible_profit(player, my_firm_price, other_firm_price)
+            player.payoff = cu(profit)
+
     winning_price = min([g.price for g in groups])
     subsession.winning_price = winning_price
 
@@ -328,7 +336,7 @@ def set_price(group: Group):
             break
 
     if not price:
-        group.price = random.choice(prices) if prices else random.randint(C.PRICE_MIN, C.PRICE_MAX)
+        group.price = random.choice(prices) if prices else random.randint(C.PRICE_MIN, group.get_player_by_id(1).price_max())
         group.agreed = False
 
 
@@ -339,8 +347,14 @@ class Player(BasePlayer):
     suggestion = models.IntegerField(
         label='Please suggest to your teammates, the price at which you want to sell your goods', max=C.PRICE_MAX,
         min=C.PRICE_MIN)
-    price = models.IntegerField(label='What is the price you want to set for your firm?', max=C.PRICE_MAX,
-                                min=C.PRICE_MIN)
+    price = models.IntegerField(label='What is the price you want to set for your firm?', min=C.PRICE_MIN)
+
+    def price_max(player):
+        max_price = C.PRICE_MAX
+        if player.session_phase == "YES":
+            max_price = 28
+        return max_price
+
     price_timeout = models.BooleanField(initial=False)
     is_winner = models.BooleanField()
     moved = models.BooleanField()
@@ -519,53 +533,6 @@ class WaitSuggestions(WaitPage):
     pass
 
 
-class Chat(Page):
-    form_model = 'player'
-    form_fields = ['price']
-
-    @staticmethod
-    def get_timeout_seconds(player: Player):
-        if player.round_number in [1, 2, 21, 22]:
-            timeout_seconds = 180
-        else:
-            timeout_seconds = 60
-        return timeout_seconds
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        participant = player.participant
-        group = player.group
-        return dict(
-            suggestions=[(p.participant.uuid, p.suggestion) for p in group.get_players() if
-                         p.field_maybe_none('suggestion')],
-            player_uuid=get_employee_to_move(group).participant.uuid,
-            nickname=f'Player {participant.uuid}'
-        )
-
-
-class Decide(Page):
-    form_model = 'player'
-    form_fields = ['price']
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        participant = player.participant
-        group = player.group
-        return dict(
-            suggestions=[(p.participant.uuid, p.suggestion) for p in group.get_players() if
-                         p.field_maybe_none('suggestion')],
-            player_uuid=get_employee_to_move(group).participant.uuid,
-            nickname=f'Player {participant.uuid}'
-        )
-
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        if timeout_happened:
-            from random import randint
-            player.price = randint(C.PRICE_MIN, C.PRICE_MAX)
-            player.price_timeout = True
-
-
 class ChatDecide(Page):
     form_model = 'player'
     form_fields = ['price']
@@ -624,13 +591,6 @@ class ChatDecide(Page):
 
         return {player.id_in_group: response}
 
-    @staticmethod
-    def before_next_page(player: Player, timeout_happened):
-        if timeout_happened:
-            from random import randint
-            player.price = randint(C.PRICE_MIN, C.PRICE_MAX)
-            player.price_timeout = True
-
 
 class WaitingResults(WaitPage):
     wait_for_all_groups = True
@@ -684,8 +644,6 @@ page_sequence = [
     Teamchat,
     WaitSuggestions,
     ChatDecide,
-    # Chat,
-    # Decide,
     WaitingResults,
     Results,
     EndTask
