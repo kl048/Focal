@@ -30,7 +30,7 @@
             display: inline-block;
         }
 
-        #calculator-results {
+        #calculator-result {
             font-size: 150%;
         }
 
@@ -146,7 +146,7 @@
                                     <br>
                                     <div class="form-group row">
                                         <label for="other_price">(For Calculation) Guess
-                                            what price Firm A will charge-</label>
+                                            what price Firm {{ other_group_color }} will charge-</label>
                                         <div class="col-sm-6">
                                             <input type="number" class="form-control" id="other_price">
                                         </div>
@@ -168,8 +168,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" id="calculator-results">
-                            <p>Profit: </p>
+                        <div class="col-md-6" id="calculator-result">
+                            <p>My Profit: <span id="calculator-results"></span></p>
+                            <p>Firm {{ other_group_color }} Profit: <span id="calculator-results-other"></span></p>
                         </div>
                     </div>
                 </div>
@@ -250,6 +251,7 @@
     <script>
         $(function () {
             let wrapper = $('<div class="input-group mb-3"></div>');
+            let other_group_color = js_vars.other_group_color;
 
             $('input[type="number"]').each(function (i) {
                 let ecuLabel = $('<span class="input-group-text">ECUs</span>');
@@ -305,7 +307,8 @@
             if (data.type && data.type === "error") {
                 alert(data.message);
             } else {
-                $("#calculator-results").html("Profit: " + data.value);
+                $("#calculator-results").html(data.value);
+                $("#calculator-results-other").html(data.value_other_firm);
                 $('#calculator-submit').show();
             }
         }

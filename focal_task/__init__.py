@@ -336,7 +336,8 @@ def set_price(group: Group):
             break
 
     if not price:
-        group.price = random.choice(prices) if prices else random.randint(C.PRICE_MIN, group.get_player_by_id(1).price_max())
+        group.price = random.choice(prices) if prices else random.randint(C.PRICE_MIN,
+                                                                          group.get_player_by_id(1).price_max())
         group.agreed = False
 
 
@@ -454,6 +455,40 @@ def calculate_possible_profit(player: Player, my_price, other_price):
     return profit
 
 
+def calculate_possible_profit_other_firm(player: Player, other_price, my_price):
+    """
+    Calculates the possible profits given inputs from the player
+    :param player: The player object
+    :param my_price: The input of the player price
+    :param other_price: The input of the other players price
+    :return: THe possible profits.
+    """
+
+    group = player.group
+
+    firm = [g.color for g in player.subsession.get_groups() if g != group][0]
+    session_phase = player.session_phase
+
+    # Anything over 49 in the no phase, returns 0
+    if session_phase == 'NO' and other_price >= 49:
+        return 0
+
+    profit = 0
+    if other_price > 21:
+        profit_matrix = get_profit_matrix(player, firm, session_phase, True)
+        if other_price < my_price:
+            profit = profit_matrix[other_price][0]
+        elif other_price == my_price:
+            profit = profit_matrix[other_price][1]
+        elif other_price > my_price:
+            profit = random.choice(profit_matrix[other_price][2])
+    else:
+        profit_matrix = get_profit_matrix(player, firm, session_phase)
+        profit = profit_matrix[other_price]
+
+    return profit
+
+
 # PAGES
 class Introduction(Page):
     form_model = 'player'
@@ -548,7 +583,15 @@ class ChatDecide(Page):
             player_uuid=get_employee_to_move(group).participant.uuid,
             nickname=f'Player {participant.uuid}',
             group_color=group.color,
-            phase=player.session_phase
+            phase=player.session_phase,
+            other_group_color=[g.color for g in player.subsession.get_groups() if g != group][0]
+        )
+
+    @staticmethod
+    def js_vars(player):
+        group = player.group
+        return dict(
+            other_group_color=[g.color for g in player.subsession.get_groups() if g != group][0]
         )
 
     def live_method(player: Player, data):
@@ -578,16 +621,18 @@ class ChatDecide(Page):
 
         # Calculate possible profit
         possible_profit = calculate_possible_profit(player, my_price, other_price)
+        possible_profit_other_firm = calculate_possible_profit_other_firm(player, other_price, my_price)
 
         # Send back response to Html
-        return ChatDecide.construct_response_msg(player, "success", "", possible_profit)
+        return ChatDecide.construct_response_msg(player, "success", "", possible_profit, possible_profit_other_firm)
 
     @staticmethod
-    def construct_response_msg(player: Player, type, message, value=None):
+    def construct_response_msg(player: Player, type, message, value=None, value_other_firm=None):
         response = dict()
         response["type"] = type
         response["message"] = message
         response["value"] = value
+        response["value_other_firm"] = value_other_firm
 
         return {player.id_in_group: response}
 
