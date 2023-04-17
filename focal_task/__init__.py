@@ -28,7 +28,7 @@ class C(BaseConstants):
     EXCHANGE_RATE_TWO_FIRMS = 0.00006667
 
     FIRM_A_YES_ABOVE_21 = {
-        22: (37, 29, [21]),
+        22: (37, 29, [21, 21]),
         23: (40, 31, [0, 22]),
         24: (44, 33, [0, 23]),
         25: (48, 35, [0, 24]),
@@ -61,34 +61,34 @@ class C(BaseConstants):
         0: 0
     }
     FIRM_A_NO_ABOVE_21 = {
-        22: (37, 29, [21]),
-        23: (40, 31, [0, 21]),
+        22: (37, 29, [21, 21]),
+        23: (40, 31, [0, 22]),
         24: (44, 33, [0, 23]),
         25: (48, 35, [0, 24]),
         26: (52, 37, [0, 25]),
         27: (56, 39, [0, 26]),
         28: (60, 41, [0, 27]),
         29: (64, 43, [0, 28]),
-        30: (45, 29, [0]),
-        31: (47, 30, [0]),
-        32: (49, 31, [0]),
-        33: (51, 32, [0]),
-        34: (53, 33, [0]),
-        35: (55, 34, [0]),
-        36: (57, 35, [0]),
-        37: (59, 36, [0]),
-        38: (61, 37, [0]),
-        39: (63, 38, [0]),
-        40: (65, 39, [0]),
-        41: (67, 40, [0]),
-        42: (69, 41, [0]),
-        43: (71, 42, [0]),
-        44: (73, 43, [0]),
-        45: (75, 44, [0]),
-        46: (77, 45, [0]),
-        47: (79, 46, [0]),
-        48: (81, 47, [0]),
-        49: (0, 0, [0]),
+        30: (45, 29, [0, 0]),
+        31: (47, 30, [0, 0]),
+        32: (49, 31, [0, 0]),
+        33: (51, 32, [0, 0]),
+        34: (53, 33, [0, 0]),
+        35: (55, 34, [0, 0]),
+        36: (57, 35, [0, 0]),
+        37: (59, 36, [0, 0]),
+        38: (61, 37, [0, 0]),
+        39: (63, 38, [0, 0]),
+        40: (65, 39, [0, 0]),
+        41: (67, 40, [0, 0]),
+        42: (69, 41, [0, 0]),
+        43: (71, 42, [0, 0]),
+        44: (73, 43, [0, 0]),
+        45: (75, 44, [0, 0]),
+        46: (77, 45, [0, 0]),
+        47: (79, 46, [0, 0]),
+        48: (81, 47, [0, 0]),
+        49: (0, 0, [0, 0]),
     }
     FIRM_A_NO_BELOW_21 = {
         21: 34,
@@ -115,8 +115,8 @@ class C(BaseConstants):
         0: 0
     }
     FIRM_B_YES_ABOVE_21 = {
-        22: (35, 30, [15]),
-        23: (39, 32, [16]),
+        22: (35, 30, [15, 15]),
+        23: (39, 32, [16, 16]),
         24: (43, 34, [0, 17]),
         25: (47, 36, [0, 18]),
         26: (51, 38, [0, 19]),
@@ -148,34 +148,34 @@ class C(BaseConstants):
         0: 0
     }
     FIRM_B_NO_ABOVE_21 = {
-        22: (35, 30, [25]),
-        23: (39, 32, [16]),
+        22: (35, 30, [15, 15]),
+        23: (39, 32, [16, 16]),
         24: (43, 34, [0, 17]),
         25: (47, 36, [0, 18]),
         26: (51, 37, [0, 19]),
         27: (55, 40, [0, 20]),
         28: (59, 42, [0, 21]),
         29: (63, 44, [0, 22]),
-        30: (46, 23, [0]),
-        31: (48, 24, [0]),
-        32: (50, 25, [0]),
-        33: (52, 26, [0]),
-        34: (54, 27, [0]),
-        35: (56, 28, [0]),
-        36: (58, 29, [0]),
-        37: (60, 30, [0]),
-        38: (62, 31, [0]),
-        39: (64, 32, [0]),
-        40: (66, 33, [0]),
-        41: (68, 34, [0]),
-        42: (70, 35, [0]),
-        43: (72, 36, [0]),
-        44: (74, 37, [0]),
-        45: (76, 38, [0]),
-        46: (78, 39, [0]),
-        47: (80, 40, [0]),
-        48: (82, 41, [0]),
-        49: (0, 0, [0]),
+        30: (46, 23, [0, 0]),
+        31: (48, 24, [0, 0]),
+        32: (50, 25, [0, 0]),
+        33: (52, 26, [0, 0]),
+        34: (54, 27, [0, 0]),
+        35: (56, 28, [0, 0]),
+        36: (58, 29, [0, 0]),
+        37: (60, 30, [0, 0]),
+        38: (62, 31, [0, 0]),
+        39: (64, 32, [0, 0]),
+        40: (66, 33, [0, 0]),
+        41: (68, 34, [0, 0]),
+        42: (70, 35, [0, 0]),
+        43: (72, 36, [0, 0]),
+        44: (74, 37, [0, 0]),
+        45: (76, 38, [0, 0]),
+        46: (78, 39, [0, 0]),
+        47: (80, 40, [0, 0]),
+        48: (82, 41, [0, 0]),
+        49: (0, 0, [0, 0]),
     }
     FIRM_B_NO_BELOW_21 = {
         21: 32,
@@ -440,6 +440,7 @@ def calculate_possible_profit(player: Player, my_price, other_price):
         return 0
 
     profit = 0
+
     if my_price > 21:
         profit_matrix = get_profit_matrix(player, firm, session_phase, True)
         if my_price < other_price:
@@ -447,7 +448,16 @@ def calculate_possible_profit(player: Player, my_price, other_price):
         elif my_price == other_price:
             profit = profit_matrix[my_price][1]
         elif my_price > other_price:
-            profit = random.choice(profit_matrix[my_price][2])
+            if firm == "A":
+                if other_price == 21:
+                    profit = profit_matrix[my_price][2][1]
+                else:
+                    profit = profit_matrix[my_price][2][0]
+            else:
+                if other_price == 21 or other_price == 22:
+                    profit = profit_matrix[my_price][2][1]
+                else:
+                    profit = profit_matrix[my_price][2][0]
     else:
         profit_matrix = get_profit_matrix(player, firm, session_phase)
         profit = profit_matrix[my_price]
@@ -474,6 +484,7 @@ def calculate_possible_profit_other_firm(player: Player, other_price, my_price):
         return 0
 
     profit = 0
+
     if other_price > 21:
         profit_matrix = get_profit_matrix(player, firm, session_phase, True)
         if other_price < my_price:
@@ -481,7 +492,16 @@ def calculate_possible_profit_other_firm(player: Player, other_price, my_price):
         elif other_price == my_price:
             profit = profit_matrix[other_price][1]
         elif other_price > my_price:
-            profit = random.choice(profit_matrix[other_price][2])
+            if firm == "A":
+                if my_price == 21:
+                    profit = profit_matrix[other_price][2][1]
+                else:
+                    profit = profit_matrix[other_price][2][0]
+            else:
+                if my_price == 21 or my_price == 22:
+                    profit = profit_matrix[other_price][2][1]
+                else:
+                    profit = profit_matrix[other_price][2][0]
     else:
         profit_matrix = get_profit_matrix(player, firm, session_phase)
         profit = profit_matrix[other_price]
@@ -573,6 +593,27 @@ class ChatDecide(Page):
     form_fields = ['price']
 
     @staticmethod
+    def get_timeout_seconds(player: Player):
+        if player.round_number in [1, 2, 26, 27]:
+            timeout_seconds = 180
+        else:
+            timeout_seconds = 60
+        return timeout_seconds
+
+    @staticmethod
+    def js_vars(player):
+        sec_to_hide_btn = 0
+
+        if player.round_number in [1, 2, 26, 27]:
+            sec_to_hide_btn = 60
+        else:
+            sec_to_hide_btn = 30
+            
+        return dict(
+            sec_to_hide_btn=sec_to_hide_btn
+        )
+
+    @staticmethod
     def vars_for_template(player: Player):
         participant = player.participant
         group = player.group
@@ -584,14 +625,7 @@ class ChatDecide(Page):
             nickname=f'Player {participant.uuid}',
             group_color=group.color,
             phase=player.session_phase,
-            other_group_color=[g.color for g in player.subsession.get_groups() if g != group][0]
-        )
-
-    @staticmethod
-    def js_vars(player):
-        group = player.group
-        return dict(
-            other_group_color=[g.color for g in player.subsession.get_groups() if g != group][0]
+            other_group_color=[g.color for g in player.subsession.get_groups() if g != group][0],
         )
 
     def live_method(player: Player, data):
@@ -635,6 +669,13 @@ class ChatDecide(Page):
         response["value_other_firm"] = value_other_firm
 
         return {player.id_in_group: response}
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        if timeout_happened:
+            from random import randint
+            player.price = randint(C.PRICE_MIN, player.price_max())
+            player.price_timeout = True
 
 
 class WaitingResults(WaitPage):

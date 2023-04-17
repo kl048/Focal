@@ -17,17 +17,13 @@
         }
 
         .profile {
-            height: 60%;
-            width: 60%;
+            height: 75%;
+            width: 75%;
         }
 
         .profile1 {
-            height: 35%;
-            width: 35%;
-        }
-
-        div button {
-            display: inline-block;
+            height: 45%;
+            width: 45%;
         }
 
         #calculator-result {
@@ -151,9 +147,6 @@
                                             <input type="number" class="form-control" id="other_price">
                                         </div>
                                     </div>
-                                    <div class="w3-show-inline-block">
-
-                                    </div>
                                     <div>
                                         <button type="button" class="btn btn-secondary btn-sm mb-2" id="calculate">
                                             See profits for the entered price
@@ -161,7 +154,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="btn btn-primary btn-sm mb-2"
-                                                id="calculator-submit" style="display: none;">
+                                                id="calculator-submit">
                                             Submit Price
                                         </button>
                                     </div>
@@ -251,7 +244,11 @@
     <script>
         $(function () {
             let wrapper = $('<div class="input-group mb-3"></div>');
-            let other_group_color = js_vars.other_group_color;
+            let sec_to_hide_btn = js_vars.sec_to_hide_btn;
+
+            $(".otree-btn-next").hide();
+            $("#calculator-submit").hide();
+
 
             $('input[type="number"]').each(function (i) {
                 let ecuLabel = $('<span class="input-group-text">ECUs</span>');
@@ -300,6 +297,13 @@
                 chatBtn.click();
                 $("#form").submit();
             });
+
+            // Show next and the submit buttons after the timeout
+            setTimeout(function () {
+                console.log("timeout ended");
+                $('.otree-btn-next').show();
+                $('#calculator-submit').show();
+            }, sec_to_hide_btn * 1000);
         });
 
         function liveRecv(data) {
@@ -309,7 +313,6 @@
             } else {
                 $("#calculator-results").html(data.value);
                 $("#calculator-results-other").html(data.value_other_firm);
-                $('#calculator-submit').show();
             }
         }
     </script>
