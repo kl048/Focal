@@ -26,6 +26,11 @@
             width: 45%;
         }
 
+        .profile3 {
+            height: 100%;
+            width: 100%;
+        }
+
         #calculator-result {
             font-size: 150%;
         }
@@ -123,6 +128,27 @@
                             </p>
                         {% endif %}
                     {% endif %}
+                </div>
+                <div class="col-md-12">
+                    <p>
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button"
+                           aria-expanded="false" aria-controls="collapseExample">
+                            Click here to see the full payoff matrix
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            {% if group_color == "A" %}
+                                <p align="center">
+                                    <img class="profile3" src="{% static "images/A/full.png" %}" alt="image"/>
+                                </p>
+                            {% else %}
+                                <p align="center">
+                                    <img class="profile3" src="{% static "images/B/full.png" %}" alt="image"/>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>

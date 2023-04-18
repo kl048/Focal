@@ -448,16 +448,10 @@ def calculate_possible_profit(player: Player, my_price, other_price):
         elif my_price == other_price:
             profit = profit_matrix[my_price][1]
         elif my_price > other_price:
-            if firm == "A":
-                if other_price == 21:
-                    profit = profit_matrix[my_price][2][1]
-                else:
-                    profit = profit_matrix[my_price][2][0]
+            if other_price <= 21:
+                profit = profit_matrix[my_price][2][1]
             else:
-                if other_price == 21 or other_price == 22:
-                    profit = profit_matrix[my_price][2][1]
-                else:
-                    profit = profit_matrix[my_price][2][0]
+                profit = profit_matrix[my_price][2][0]
     else:
         profit_matrix = get_profit_matrix(player, firm, session_phase)
         profit = profit_matrix[my_price]
@@ -492,16 +486,11 @@ def calculate_possible_profit_other_firm(player: Player, other_price, my_price):
         elif other_price == my_price:
             profit = profit_matrix[other_price][1]
         elif other_price > my_price:
-            if firm == "A":
-                if my_price == 21:
-                    profit = profit_matrix[other_price][2][1]
-                else:
-                    profit = profit_matrix[other_price][2][0]
+
+            if my_price <= 21:
+                profit = profit_matrix[other_price][2][1]
             else:
-                if my_price == 21 or my_price == 22:
-                    profit = profit_matrix[other_price][2][1]
-                else:
-                    profit = profit_matrix[other_price][2][0]
+                profit = profit_matrix[other_price][2][0]
     else:
         profit_matrix = get_profit_matrix(player, firm, session_phase)
         profit = profit_matrix[other_price]
@@ -608,7 +597,7 @@ class ChatDecide(Page):
             sec_to_hide_btn = 60
         else:
             sec_to_hide_btn = 30
-            
+
         return dict(
             sec_to_hide_btn=sec_to_hide_btn
         )
