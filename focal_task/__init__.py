@@ -448,10 +448,16 @@ def calculate_possible_profit(player: Player, my_price, other_price):
         elif my_price == other_price:
             profit = profit_matrix[my_price][1]
         elif my_price > other_price:
-            if other_price <= 21:
-                profit = profit_matrix[my_price][2][1]
+            if firm == "A":
+                if other_price <= 21:
+                    profit = profit_matrix[my_price][2][1]
+                else:
+                    profit = profit_matrix[my_price][2][0]
             else:
-                profit = profit_matrix[my_price][2][0]
+                if other_price <= 22:
+                    profit = profit_matrix[my_price][2][1]
+                else:
+                    profit = profit_matrix[my_price][2][0]
     else:
         profit_matrix = get_profit_matrix(player, firm, session_phase)
         profit = profit_matrix[my_price]
@@ -486,11 +492,16 @@ def calculate_possible_profit_other_firm(player: Player, other_price, my_price):
         elif other_price == my_price:
             profit = profit_matrix[other_price][1]
         elif other_price > my_price:
-
-            if my_price <= 21:
-                profit = profit_matrix[other_price][2][1]
+            if firm == "A":
+                if my_price <= 21:
+                    profit = profit_matrix[other_price][2][1]
+                else:
+                    profit = profit_matrix[other_price][2][0]
             else:
-                profit = profit_matrix[other_price][2][0]
+                if my_price <= 22:
+                    profit = profit_matrix[other_price][2][1]
+                else:
+                    profit = profit_matrix[other_price][2][0]
     else:
         profit_matrix = get_profit_matrix(player, firm, session_phase)
         profit = profit_matrix[other_price]
