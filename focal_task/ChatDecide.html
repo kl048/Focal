@@ -1,0 +1,345 @@
+{% extends "global/Page.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .input-group, input.form-control, select.form-control {
+            max-width: 180px;
+        }
+
+        .otree-timer {
+            position: sticky;
+            top: 0px;
+            width: fit-content;
+            float: right;
+        }
+
+        .profile {
+            height: 75%;
+            width: 75%;
+        }
+
+        .profile1 {
+            height: 45%;
+            width: 45%;
+        }
+
+        .profile3 {
+            height: 100%;
+            width: 100%;
+        }
+
+        #calculator-result {
+            font-size: 150%;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 align="center"> Period {{ player.round_number }} </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 align="center">I am in Firm {{ group_color }}</h5>
+                    {% if group_color == "A" %}
+                        {% if phase == "YES" %}
+                            <p>
+                                If I choose a price above 21, my profit depends on Firm B’s price choice and vice versa.
+                                The table below assumes that Firm B chooses a price of 21 or above.
+                            </p>
+                            <p>
+                                <img class="profile1" src="{% static "images/A/yes_1.png" %}" alt="image"/>
+                            </p>
+                            <p>
+                                If I choose a price of 21 or below, my profit does NOT depend on Firm B’s price choice.
+                                My profits in this case:
+                            </p>
+                            <p>
+                                <img class="profile" src="{% static "images/A/yes_2.png" %}" alt="image"/>
+                            </p>
+                        {% else %}
+                            <p>
+                                If I choose a price above 21, my profit depends on Firm B’s price choice and vice versa.
+                                The table below assumes that Firm B chooses a price of 21 or above.
+                            </p>
+                            <p>
+                                <img class="profile1" src="{% static "images/A/no_1.png" %}" alt="image"/>
+                            </p>
+                            <p>
+                                If I choose a price of 21 or below, my profit does NOT depend on Firm B’s price choice.
+                                My profits in this case:
+                            </p>
+                            <p>
+                                <img class="profile" src="{% static "images/A/no_2.png" %}" alt="image"/>
+                            </p>
+                            <p>
+                                Likewise, if Firm B chooses a price of 21 or below, their profit does NOT depend on my
+                                price choice. Firm B’s profits in this case:
+                            </p>
+                            <p>
+                                <img class="profile" src="{% static "images/A/no_3.png" %}" alt="image"/>
+                            </p>
+                        {% endif %}
+                    {% else %}
+                        {% if phase == "YES" %}
+                            <p>
+                                If I choose a price above 21, my profit depends on Firm A’s price choice and vice versa.
+                                The table below assumes that Firm A chooses a price of 21 or above.
+                            </p>
+                            <p>
+                                <img class="profile1" src="{% static "images/B/yes_1.png" %}" alt="image"/>
+                            </p>
+                            <p>
+                                If I choose a price of 21 or below, my profit does NOT depend on Firm A’s price choice.
+                                My profits in this case:
+                            </p>
+                            <p>
+                                <img class="profile" src="{% static "images/B/yes_2.png" %}" alt="image"/>
+                            </p>
+                        {% else %}
+                            <p>
+                                If I choose a price above 21, my profit depends on Firm A’s price choice and vice versa.
+                                The table below assumes that Firm A chooses a price of 21 or above.
+                            </p>
+                            <p>
+                                <img class="profile1" src="{% static "images/B/no_1.png" %}" alt="image"/>
+                            </p>
+                            <p>
+                                If I choose a price of 21 or below, my profit does NOT depend on Firm A’s price choice.
+                                My profits in this case:
+                            </p>
+                            <p>
+                                <img class="profile" src="{% static "images/B/no_2.png" %}" alt="image"/>
+                            </p>
+                            <p>
+                                Likewise, if Firm A chooses a price of 21 or below, their profit does NOT depend on my
+                                price choice. Firm A’s profits in this case:
+                            </p>
+                            <p>
+                                <img class="profile" src="{% static "images/B/no_3.png" %}" alt="image"/>
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-md-12">
+                    <p>
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button"
+                           aria-expanded="false" aria-controls="collapseExample">
+                            Click to see the FULL PROFIT TABLE
+                        </a>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            {% if group_color == "A" %}
+                                <p align="center">
+                                    <img class="profile3" src="{% static "images/A/full.png" %}" alt="image"/>
+                                </p>
+                            {% else %}
+                                <p align="center">
+                                    <img class="profile3" src="{% static "images/B/full.png" %}" alt="image"/>
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="calculator">
+                                <div class="form-group row">
+                                    <div class="form-group row">
+                                        <label for="my_price">Please enter your
+                                            price</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" id="my_price">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group row">
+                                        <label for="other_price">(For Calculation) Guess
+                                            what price Firm {{ other_group_color }} will charge-</label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control" id="other_price">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-secondary btn-sm mb-2" id="calculate">
+                                            See profits for the entered price
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-sm mb-2"
+                                                id="calculator-submit">
+                                            Submit Price
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="calculator-result">
+                            <p>My Profit: <span id="calculator-results"></span></p>
+                            <p>Firm {{ other_group_color }}'s Profit: <span id="calculator-results-other"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="chat-widget">
+                        <h5><i><b>You can chat with your team in the box below</b></i></h5>
+                        {% chat nickname=nickname %}
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    {{ formfields }}
+                </div>
+                <br>
+    {{ next_button }}
+                <div class="col-md-12">
+                    {% if player.round_number == 17 or player.round_number == 18 or player.round_number == 19 or player.round_number == 20 %}
+                        <h3>
+                            Instructions- Part 2
+                        </h3>
+                        <p>
+                            It is currently period {{ player.round_number }}. In period 21,
+                            {% if participant.moved %}<b> YOU</b> {% else %} <b>PLAYER {{ player_uuid }}</b>
+                                from your firm {% endif %}
+
+                            will leave the firm and join
+                            {% if session.config.num_firms == 2 %}
+                                the other firm in the market.
+                            {% else %}
+                                another firm in the market.
+                            {% endif %}
+
+                            A person from
+                            {% if session.config.num_firms == 2 %}
+                                the other firm
+                            {% else %}
+                                another firm
+                            {% endif %}
+                            will join this firm and will have a unique ID.
+
+                            {% if session.config.num_firms == 2 %}
+                                The other firm in the market is receiving a similar message so everyone is aware of the
+                                change procedure.
+                            {% else %}
+                                The other firms in the market are receiving a similar message so everyone is aware of
+                                the change procedure.
+                            {% endif %}
+
+                            In periods 21 and 22, you will have <b>3</b> minutes to chat with your new
+                            {% if session.config.players_per_group == 2 %}
+                                teammate.
+                            {% else %}
+                                teammates.
+                            {% endif %}
+
+                            Starting with period 23, you will have 60 seconds to chat with your
+                            {% if session.config.players_per_group == 2 %}
+                                teammate.
+                            {% else %}
+                                teammates.
+                            {% endif %}
+                            Messages are only visible to the current members of the firm; no previous members can view
+                            these messages. Otherwise, the market, price determination, feedback, and profits are the
+                            same as before.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(function () {
+            let wrapper = $('<div class="input-group mb-3"></div>');
+            let sec_to_hide_btn = js_vars.sec_to_hide_btn;
+
+            $(".otree-btn-next").hide();
+            $("#calculator-submit").hide();
+
+
+            $('input[type="number"]').each(function (i) {
+                let ecuLabel = $('<span class="input-group-text">ECUs</span>');
+                $(this).wrap(wrapper).parents('.input-group').append(ecuLabel);
+            })
+
+            let chatBtn = $('.otree-chat__btn-send'),
+                chatInput = $('.otree-chat__input');
+
+            $('.otree-btn-next').on('click', function (e) {
+                e.preventDefault();
+                let form = $('#form');
+                if (form[0].reportValidity()) {
+                    chatInput.val(
+                        'This participant has submitted their price decision and left the page'
+                    )
+                    chatBtn.click();
+                    $("#form").submit();
+                }
+            });
+
+            $("#calculate").on("click", function (e) {
+                e.preventDefault();
+                let my_price = parseInt($("#my_price").val());
+                let other_price = parseInt($("#other_price").val());
+
+                if (isNaN(my_price) || isNaN(other_price)) {
+                    alert("Invalid input. Input must be an integer.");
+                }
+
+                liveSend({
+                    my_price: my_price,
+                    other_price: other_price
+                });
+            });
+
+            $("#calculator-submit").on("click", function (e) {
+                let entered_price = parseInt($("#my_price").val());
+                if (isNaN(entered_price)) {
+                    return;
+                }
+                $('#id_price').val(entered_price);
+                chatInput.val(
+                    'This participant has submitted their price decision and left the page'
+                )
+                chatBtn.click();
+                $("#form").submit();
+            });
+
+            // Show next and the submit buttons after the timeout
+            setTimeout(function () {
+                console.log("timeout ended");
+                $('.otree-btn-next').show();
+                $('#calculator-submit').show();
+            }, sec_to_hide_btn * 1000);
+        });
+
+        function liveRecv(data) {
+            console.log(data);
+            if (data.type && data.type === "error") {
+                alert(data.message);
+            } else {
+                $("#calculator-results").html(data.value);
+                $("#calculator-results-other").html(data.value_other_firm);
+            }
+        }
+    </script>
+{% endblock %}

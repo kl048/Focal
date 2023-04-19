@@ -1,0 +1,21 @@
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+<h3>
+    The task is over. Please click the next button to take the survey.
+</h3>
+
+<p>
+    Your total payoff from today's experiment
+    (including {{ session.config.participation_fee}} show up fee) is {{ total_earnings }}.
+</p>
+
+<p>
+   You can collect the cash after finishing the survey.
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

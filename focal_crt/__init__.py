@@ -50,6 +50,7 @@ class Player(BasePlayer):
     )
     quiz7_wrong = models.IntegerField(initial=0)
 
+
 class CRT(Page):
     form_model = 'player'
     form_fields = ['quiz7', 'quiz1', 'quiz2', 'quiz3', 'quiz4', 'quiz5', 'quiz6']
@@ -85,9 +86,11 @@ class CRT(Page):
             if player.num_failed_attempts >= 1:
                 player.failed_too_many = True
                 # we don't return any error here; just let the user proceed to the
-                # next page, but the next page is the 'Nexy' page that takes them to a page with next button
+                # next page, but the next page is the 'Next' page that takes them to a page with next button
             else:
                 return errors
+
+
 
 class Next(Page):
     @staticmethod

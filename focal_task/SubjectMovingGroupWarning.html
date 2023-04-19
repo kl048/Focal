@@ -1,0 +1,53 @@
+{{ extends 'global/Page.html' }}
+
+{{ block content }}
+
+    <h3>
+        Instructions- Part 2
+    </h3>
+    <p>
+        It is currently period {{ player.round_number }} . In period 21,
+        {{ if participant.moved }}<b>YOU</b>{{ else }}<b>PLAYER {{ player_uuid }}</b>
+        from your firm{{ endif }}
+
+        will leave the firm and join
+        {{ if session.config.num_firms == 2 }}
+        the other firm in the market.
+        {{ else }}
+        another firm in the market.
+        {{ endif }}
+
+        A person from
+        {{ if session.config.num_firms == 2 }}
+        the other firm
+        {{ else }}
+        another firm
+        {{ endif }}
+        will join this firm and will have a unique ID.
+        {{ if session.config.num_firms == 2 }}
+        The other firm in the market is receiving a similar message so everyone is aware of the change procedure.
+        {{ else }}
+        The other firms in the market are receiving a similar message so everyone is aware of the change procedure.
+        {{ endif }}
+        In periods 21 and 22, you will have
+        <b>3</b> minutes to chat with your
+        {{ if session.config.players_per_group == 2 }}
+        new teammate.
+        {{ else }}
+        teammates.
+        {{ endif }}
+        Starting with period 23, you will have 60 seconds to chat with your
+        {{ if session.config.players_per_group == 2  }}
+        teammate.
+        {{ else }}
+        teammates.
+        {{ endif }}
+
+        Messages are only visible to the current members of the firm; no previous members can view these messages.
+        Otherwise, the market, price determination, feedback, and profits are the same as before.
+    </p>
+
+{{ next_button }}
+
+
+{{ endblock }}
